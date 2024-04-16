@@ -11,7 +11,8 @@ public extension TargetDependency {
             .external(name: "RxMoya"),
             .external(name: "KeychainSwift"),
             .external(name: "RxFlow"),
-            .external(name: "Kingfisher")
+            .external(name: "Kingfisher"),
+            .external(name: "xquare-design-system-iOS")
         ]
     }
 }
@@ -26,6 +27,5 @@ public extension TargetDependency.SPM {
     static let KeychainSwift = TargetDependency.external(name: "KeychainSwift")
     static let RxFlow = TargetDependency.external(name: "RxFlow")
     static let Kingfisher = TargetDependency.external(name: "Kingfisher")
-    
-
+    static let xquareDesignSystem = TargetDependency.external(name: "xquare-design-system-iOS")
 }

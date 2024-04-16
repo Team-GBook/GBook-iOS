@@ -35,6 +35,11 @@ let dependencies = Dependencies.init(
             url: "https://github.com/onevcat/Kingfisher.git",
             requirement: .upToNextMajor(from: "7.4.1")
         ),
+        //Xquare_DesignSystem
+        .remote(
+            url:"https://github.com/team-xquare/xquare-design-system-iOS.git",
+            requirement: .upToNextMajor(from: "0.0.3")
+        )
     ]),
     platforms: [.iOS]
 )
