@@ -7,7 +7,7 @@ let project = Project.makeModule(
     destination: .iOS,
     product: .staticFramework,
     dependencies: [
-        .Module.appNetwork,
-        .Project.domain
+        .Modules.appNetwork,
+        .Projects.domain
     ]
 )

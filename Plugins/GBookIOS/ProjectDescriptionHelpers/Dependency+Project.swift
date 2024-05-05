@@ -1,12 +1,11 @@
 import ProjectDescription
 
 public extension TargetDependency {
-    struct Module {}
-    struct Project {}
+    struct Modules {}
+    struct Projects {}
 }
 
-public extension TargetDependency.Project {
-    static let appFlow = project(name: "AppFlow")
+public extension TargetDependency.Projects {
     static let core = project(name: "Core")
     static let presentation = project(name: "Presentation")
     static let data = project(name: "Data")
@@ -20,10 +19,9 @@ public extension TargetDependency.Project {
     }
 }
 
-public extension TargetDependency.Module {
+public extension TargetDependency.Modules {
     static let thirdPartyLib = module(name: "ThirdPartyLib")
     static let appNetwork = module(name: "AppNetwork")
-    static let designSystem = module(name: "DesignSystem")
 
     static func module(name: String) -> TargetDependency {
         return .project(

@@ -5,6 +5,6 @@ import DependencyHelper
 let project = Project.makeModule(
     name: "ThirdPartyLib",
     destination: .iOS,
-    product: .framework,
+    product: .staticFramework,
     dependencies: TargetDependency.SPM.all
 )

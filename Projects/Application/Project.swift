@@ -16,7 +16,8 @@ let project = Project(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             dependencies: [
-                .Project.appFlow
+                .Projects.data,
+                .Projects.presentation
             ]
         )
     ]
