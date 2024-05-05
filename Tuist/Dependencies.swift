@@ -1,6 +1,6 @@
 import ProjectDescription
 
-let dependencies = Dependencies.init(
+let dependencies = Dependencies(
     swiftPackageManager: SwiftPackageManagerDependencies([
         // Moya
         .remote(
@@ -37,8 +37,8 @@ let dependencies = Dependencies.init(
         ),
         //Xquare_DesignSystem
         .remote(
-            url:"https://github.com/team-xquare/xquare-design-system-iOS.git",
-            requirement: .upToNextMajor(from: "0.0.3")
+            url:"https://github.com/team-xquare/xquare-design-system-iOS",
+            requirement: .upToNextMajor(from: "0.0.4")
         )
     ]),
     platforms: [.iOS]
