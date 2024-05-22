@@ -11,11 +11,14 @@ public class AuthRepositoryImpl: AuthRepositoryInterface {
         return Completable.create { [weak self] completable in
             let disposable = self?.dataSource.login(email: email, password: password)
                 .subscribe(onSuccess: { tokens in
+                    print(tokens.accessToken)
                     TokenStorage.shared.accessToken = tokens.accessToken
                     TokenStorage.shared.refreshToken = tokens.refreshToken
                     completable(.completed)
                 }, onFailure: { error in
-                    completable(.error(error))
+                    print("askfnjqnjnwjn")
+//                    completable(.error(error))
+                    print(error)
                 })
             return Disposables.create {
                 disposable?.dispose()

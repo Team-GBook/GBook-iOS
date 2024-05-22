@@ -2,8 +2,8 @@ import Foundation
 
 public struct TokenDTO: Decodable {
     enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-        case refreshToken = "refresh_token"
+        case accessToken = "accessToken"
+        case refreshToken = "refreshToken"
     }
 
     let accessToken: String

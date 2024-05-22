@@ -1,7 +1,6 @@
 import Foundation
 import KeychainSwift
 
-//TODO: - 토큰저장소 다시 만들기
 public enum TokenType {
     case accessToken
     case refreshToken
