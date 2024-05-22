@@ -10,6 +10,7 @@ public extension TargetDependency.Projects {
     static let presentation = project(name: "Presentation")
     static let data = project(name: "Data")
     static let domain = project(name: "Domain")
+    static let flow = project(name: "Flow")
     
     static func project(name: String) -> TargetDependency {
         return .project(
@@ -22,6 +23,7 @@ public extension TargetDependency.Projects {
 public extension TargetDependency.Modules {
     static let thirdPartyLib = module(name: "ThirdPartyLib")
     static let appNetwork = module(name: "AppNetwork")
+    static let designSystem = module(name: "DesignSystem")
 
     static func module(name: String) -> TargetDependency {
         return .project(
