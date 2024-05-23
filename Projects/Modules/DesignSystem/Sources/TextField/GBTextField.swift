@@ -4,7 +4,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-public class GBTextField: UITextField {
+open class GBTextField: UITextField {
 
     private var disposeBag = DisposeBag()
     public var isSecurity: Bool = false {
@@ -33,7 +33,7 @@ public class GBTextField: UITextField {
         }).disposed(by: disposeBag)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
