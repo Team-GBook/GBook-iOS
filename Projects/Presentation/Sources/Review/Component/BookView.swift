@@ -4,6 +4,7 @@ import Then
 import DesignSystem
 import Domain
 import Core
+import Kingfisher
 
 public class BookView: BaseView<Book> {
 
@@ -13,7 +14,7 @@ public class BookView: BaseView<Book> {
     private let bookTitleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .bold)
     }
-    private let writerLabel = UILabel().then {
+    private let authorLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
         $0.textColor = .onSurface
     }
@@ -23,10 +24,17 @@ public class BookView: BaseView<Book> {
     }
     private lazy var bookTitleStackView  = UIStackView(arrangedSubviews: [
         bookTitleLabel,
-        writerLabel,
+        authorLabel,
         publisherLabel
     ]).then {
         $0.axis = .vertical
+    }
+
+    public override func configure(with item: Book) {
+        bookImageView.kf.setImage(with: URL(string: item.cover))
+        bookTitleLabel.text = item.title
+        authorLabel.text = item.author
+        publisherLabel.text = item.publisher
     }
 
     public override func addView() {

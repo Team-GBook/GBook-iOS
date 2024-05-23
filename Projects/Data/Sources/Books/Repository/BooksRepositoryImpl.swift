@@ -19,4 +19,11 @@ public class BooksRepositoryImpl: BooksRepositoryInterface {
     public func likeBook(isbn: String) -> RxSwift.Completable {
         return dataSource.likeBooks(isbn: isbn)
     }
+    public func fetchReview(isbn: String) -> RxSwift.Single<Domain.BookReviewListEntity> {
+        return dataSource.fetchReview(isbn: isbn)
+            .map(BookReviewListDTO.self)
+            .map { $0.toDomain() }
+    }
+    
+
 }

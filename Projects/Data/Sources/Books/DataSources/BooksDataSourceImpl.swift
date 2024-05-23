@@ -23,4 +23,10 @@ public class BooksDataSourceImpl: BooksDataSourceInterface {
             .filterSuccessfulStatusCodes()
             .asCompletable()
     }
+    public func fetchReview(isbn: String) -> RxSwift.Single<Moya.Response> {
+        return provider.rx.request(.fetchReviews(isbn: isbn))
+            .filterSuccessfulStatusCodes()
+    }
+    
+
 }
