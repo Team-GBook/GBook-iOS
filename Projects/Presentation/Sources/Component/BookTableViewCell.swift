@@ -2,9 +2,12 @@ import UIKit
 import SnapKit
 import Then
 import DesignSystem
+import Domain
 import RxSwift
+import Kingfisher
+import Core
 
-class BookTableViewCell: UITableViewCell {
+class BookTableViewCell: BaseTableViewCell<Book> {
 
     static let cellIdentifier: String = "BookTableViewCell"
     var disposeBag = DisposeBag()
@@ -49,12 +52,22 @@ class BookTableViewCell: UITableViewCell {
 //        $0.axis = .horizontal
 //        $0.spacing = 8
 //    }
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        disposeBag = DisposeBag() 
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        disposeBag = DisposeBag() 
+//    }
+
+    override func configure(with item: Book) {
+        super.configure(with: item)
+        self.bookTitleLabel.text = item.title
+        self.autherLabel.text = item.author
+        self.publisherLabel.text = item.publisher
+        self.bookImageView.kf.setImage(with: URL(string: item.cover))
+        self.isbn = item.isbn
+        self.heartCountLabel.text = "\(item.likeCount)"
+
     }
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func addView() {
         addSubview(cellBackgroundView)
         [
             bookImageView,
@@ -63,6 +76,8 @@ class BookTableViewCell: UITableViewCell {
             heartButton,
             heartCountLabel
         ].forEach { cellBackgroundView.addSubview($0) }
+    }
+    override func setLayout() {
         cellBackgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -95,4 +110,38 @@ class BookTableViewCell: UITableViewCell {
             $0.height.equalTo(24)
         }
     }
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        cellBackgroundView.snp.makeConstraints {
+//            $0.edges.equalToSuperview()
+//        }
+//        bookImageView.snp.makeConstraints {
+//            $0.top.bottom.equalToSuperview().inset(16)
+//            $0.leading.equalToSuperview().inset(20)
+//            $0.width.equalTo(82)
+//        }
+//        titleStackView.snp.makeConstraints {
+//            $0.top.equalTo(bookImageView)
+//            $0.leading.equalTo(bookImageView.snp.trailing).offset(8)
+//            $0.trailing.equalToSuperview().inset(20)
+//        }
+////        likeStackView.snp.makeConstraints {
+////            $0.trailing.equalToSuperview().inset(20)
+////            $0.bottom.equalToSuperview().inset(16)
+////            $0.height.equalTo(24)
+////        }
+//        
+//        heartCountLabel.snp.makeConstraints {
+//            $0.bottom.equalToSuperview().inset(16)
+//            $0.trailing.equalToSuperview().inset(20)
+//            $0.width.equalTo(19)
+//            $0.height.equalTo(24)
+//        }
+//        heartButton.snp.makeConstraints {
+//            $0.bottom.equalToSuperview().inset(16)
+//            $0.trailing.equalTo(heartCountLabel.snp.leading).offset(-8)
+//            $0.width.equalTo(25)
+//            $0.height.equalTo(24)
+//        }
 }

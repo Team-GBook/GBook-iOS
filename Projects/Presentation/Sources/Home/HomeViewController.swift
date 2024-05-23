@@ -9,6 +9,7 @@ public class HomeViewController: UIViewController {
 
     public let viewModel: HomeViewModel
     private let viewWillAppear = PublishRelay<Void>()
+    private let itemSelected = PublishRelay<(String?, UIImage?, String?, String?, String?)>()
     private var disposeBag = DisposeBag()
     private let likeAccept = PublishRelay<String>()
     private let titleLabel = UILabel().then {
@@ -59,12 +60,12 @@ public class HomeViewController: UIViewController {
         bind()
     }
     public override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
         viewWillAppear.accept(())
     }
     private func bind() {
         let input = HomeViewModel.Input(
             searchButtonDidTapped: searchButton.rx.tap.asObservable(), 
+            itemSelected: itemSelected.asObservable(),
             likeAccept: likeAccept.asObservable(),
             viewWillAppear: viewWillAppear.asObservable()
         )
@@ -73,32 +74,62 @@ public class HomeViewController: UIViewController {
             .bind(to: bestSellerTableView.rx.items(
                 cellIdentifier: BookTableViewCell.cellIdentifier,
                 cellType: BookTableViewCell.self)
-            ) { [weak self] row, item, cell in
-                guard let self = self else { return }
-                cell.bookTitleLabel.text = item.title
-                cell.autherLabel.text = item.author
-                cell.publisherLabel.text = item.publisher
-                cell.bookImageView.kf.setImage(with: URL(string: item.cover))
-                cell.isbn = item.isbn
-                cell.heartCountLabel.text = "\(item.likeCount)"
-                cell.heartButton.rx.tap
-                    .subscribe(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        self.likeAccept.accept(cell.isbn)
-                        print("tap")
-                        var heartCount = Int(cell.heartCountLabel.text ?? "0")
-                        heartCount! += 1
-                        cell.heartCountLabel.text = "\(heartCount ?? 0)"
-
-                        let image = UIImage(named: "redHeart")
-                        cell.heartButton.setImage(image, for: .normal)
-                        cell.heartButton.tintColor = .red
-
-                    })
-                    .disposed(by: cell.disposeBag)
+            ) { row, items, cell in
+                cell.configure(with: items)
             }
             .disposed(by: disposeBag)
-        
+//        output.books.asObservable()
+//            .bind(to: bestSellerTableView.rx.items(
+//                cellIdentifier: BookTableViewCell.cellIdentifier,
+//                cellType: BookTableViewCell.self)
+//            ) { [weak self] row, item, cell in
+//                guard let self = self else { return }
+//                cell.bookTitleLabel.text = item.title
+//                cell.autherLabel.text = item.author
+//                cell.publisherLabel.text = item.publisher
+//                cell.bookImageView.kf.setImage(with: URL(string: item.cover))
+//                cell.isbn = item.isbn
+//                cell.heartCountLabel.text = "\(item.likeCount)"
+//                cell.heartButton.rx.tap
+//                    .subscribe(onNext: { [weak self] in
+//                        guard let self = self else { return }
+//                        self.likeAccept.accept(cell.isbn)
+//                        print("tap")
+//                        var heartCount = Int(cell.heartCountLabel.text ?? "0")
+//                        heartCount! += 1
+//                        cell.heartCountLabel.text = "\(heartCount ?? 0)"
+//
+//                        let image = UIImage(named: "redHeart")
+//                        cell.heartButton.setImage(image, for: .normal)
+//                        cell.heartButton.tintColor = .red
+//
+//                    })
+//                    .disposed(by: cell.disposeBag)
+//            }
+//            .disposed(by: disposeBag)
+//        bestSellerTableView.rx.itemSelected
+//            .subscribe(onNext: { [weak self] indexPath in
+//                guard let cell = self?.bestSellerTableView.cellForRow(at: indexPath) as? BookTableViewCell else { return }
+//                itemTap.accept((
+//                    cell.isbn,
+//                    cell.bookImageView.image,
+//                    cell.bookTitleLabel.text,
+//                    cell.autherLabel.text,
+//                    cell.publisherLabel.text
+//                ))
+//                self.itemTap.accept((cell.isbn, cell.bookImageView.image, cell.bookTitleLabel.text, cell.authorLabel.text, cell.publisherLabel.text))
+//            })
+//            .disposed(by: disposeBag)
+        bestSellerTableView.rx.itemSelected
+            .map { indexPath -> (String?, UIImage?, String?, String?, String?)? in
+                guard let cell = self.bestSellerTableView.cellForRow(at: indexPath) as? BookTableViewCell else { return nil }
+                return (cell.isbn, cell.bookImageView.image, cell.bookTitleLabel.text, cell.autherLabel.text, cell.publisherLabel.text)
+            }
+            .compactMap { $0 }
+            .bind(to: itemSelected)
+            .disposed(by: disposeBag)
+
+
     }
     private func addView() {
         [
