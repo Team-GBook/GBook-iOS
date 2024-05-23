@@ -51,6 +51,8 @@ extension AppFlow {
             homeFlow,
             when: .created) { root in
                 self.window.rootViewController = root
+//                root.modalPresentationStyle = .fullScreen
+//                root.modalTransitionStyle = .crossDissolve
             }
         return .one(flowContributor: .contribute(
             withNextPresentable: homeFlow,
@@ -59,7 +61,8 @@ extension AppFlow {
         )
     }
     private func navigateTest() -> FlowContributors {
-        let vc = BookSearchViewController(viewModel: container.bookSearchViewModel)
+//        let vc = BookSearchViewController(viewModel: container.bookSearchViewModel)
+        let vc = BookReviewWriteViewContler()
         self.window.rootViewController = vc
         return .one(flowContributor: .contribute(
             withNextPresentable: vc,

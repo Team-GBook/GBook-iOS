@@ -1,4 +1,5 @@
 import RxFlow
+import Foundation
 import RxSwift
 import Core
 import Presentation
@@ -24,6 +25,13 @@ public class HomeFlow: Flow {
             return navigateToHome()
         case .searchIsRequired:
             return navigateToSearch()
+        case .bookReviewWriteIsRequired(let bookImage, let bookTitle, let author, let publisher):
+            return navigateToBookReportWrite(
+                bookImage: bookImage,
+                bookTitle: bookTitle,
+                author: author,
+                publisher: publisher
+            )
         default:
             return .none
         }
@@ -42,5 +50,17 @@ public class HomeFlow: Flow {
             withNextPresentable: searchViewController,
             withNextStepper: searchViewController.viewModel
         ))
+    }
+    private func navigateToBookReportWrite(
+        bookImage: URL,
+        bookTitle: String,
+        author: String,
+        publisher: String
+    ) -> FlowContributors {
+        let bookReportWriteViewController = BookReviewWriteViewContler()
+        rootViewController.navigationController?.pushViewController(bookReportWriteViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: bookReportWriteViewController,
+            withNextStepper: OneStepper(withSingleStep: AppStep.error)))
     }
 }
