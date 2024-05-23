@@ -54,22 +54,21 @@ extension AuthAPI: TargetType {
                     "password": password
                 ], encoding: JSONEncoding.default)
         case .sendEmail(let email):
-            return .requestParameters(
-                parameters: [
-                    "email": email
-                ], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: [
+                "email": email
+            ],encoding: URLEncoding.queryString)
         case .emailCheck(let email, let code):
             return .requestParameters(
                 parameters: [
                     "email": email,
                     "code": code
-                ], encoding: JSONEncoding.default)
+                ], encoding: URLEncoding.queryString)
         case .signup(let email, let password, let nickName, let genre):
             return .requestParameters(
                 parameters: [
                     "email": email,
                     "password": password,
-                    "nick_name": nickName,
+                    "nickName": nickName,
                     "genre": genre
                 ], encoding: JSONEncoding.default)
         }
