@@ -6,6 +6,10 @@ public enum BooksAPI {
     case searchBooks(keyword: String)
     case fetchBestSeller
     case likeBook(isbn: String)
+    case fetchDetailBook(isbn: String)
+
+    case fetchReviews(isbn: String)
+
 }
 
 extension BooksAPI: TargetType {
@@ -21,12 +25,20 @@ extension BooksAPI: TargetType {
             return "/books/bestSeller"
         case .likeBook(let isbn):
             return "/books/like/\(isbn)"
+        case .fetchDetailBook(let isbn):
+            return "books/details/\(isbn)"
+
+        case .fetchReviews(let isbn):
+            return "/reviews/\(isbn)"
         }
     }
     
     public var method: Moya.Method {
         switch self {
-        case .searchBooks, .fetchBestSeller:
+        case .searchBooks,
+            .fetchBestSeller,
+            .fetchDetailBook,
+            .fetchReviews:
             return .get
         case .likeBook:
             return .put
@@ -45,7 +57,7 @@ extension BooksAPI: TargetType {
                 parameters: [
                     "start": 1
                 ], encoding: URLEncoding.queryString)
-        case .likeBook:
+        default:
             return .requestPlain
         }
     }

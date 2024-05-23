@@ -18,7 +18,6 @@ public class BooksDataSourceImpl: BooksDataSourceInterface {
         return provider.rx.request(.fetchBestSeller)
             .filterSuccessfulStatusCodes()
     }
-    
     public func likeBooks(isbn: String) -> Completable {
         return provider.rx.request(.likeBook(isbn: isbn))
             .filterSuccessfulStatusCodes()
