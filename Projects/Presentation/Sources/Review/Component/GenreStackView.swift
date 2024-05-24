@@ -3,6 +3,7 @@ import SnapKit
 import Then
 import RxGesture
 import RxSwift
+import DesignSystem
 
 class GenreStackView: UIView {
     private let disposeBag = DisposeBag()

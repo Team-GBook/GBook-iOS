@@ -11,6 +11,7 @@ public class BookReviewWriteViewContler: UIViewController {
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
+    private let contentView = UIView()
     private let stackView = UIStackView().then {
         $0.axis = .vertical
     }
@@ -36,7 +37,9 @@ public class BookReviewWriteViewContler: UIViewController {
     private let genreStackView = GenreStackView().then {
         $0.setGenre()
     }
-
+    private let reviewWriteButton = GBButton(type: .system).then {
+        $0.setTitle("작성", for: .normal)
+    }
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         addView()
@@ -72,7 +75,12 @@ public class BookReviewWriteViewContler: UIViewController {
 extension BookReviewWriteViewContler {
     private func addView() {
         view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
+        scrollView.addSubview(contentView)
+
+        [
+            stackView,
+            reviewWriteButton
+        ].forEach(contentView.addSubview(_:))
  
         [
             bookView,
@@ -89,13 +97,22 @@ extension BookReviewWriteViewContler {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.width.equalToSuperview()
         }
-        stackView.snp.makeConstraints {
+        contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-            $0.bottom.equalTo(genreStackView.snp.bottom)
+            $0.bottom.equalTo(reviewWriteButton.snp.bottom)
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
         }
         bookView.snp.makeConstraints {
             $0.height.equalTo(173)
+        }
+        reviewWriteButton.snp.makeConstraints {
+            $0.top.equalTo(stackView.snp.bottom).offset(50)
+            $0.height.equalTo(48)
+            $0.leading.trailing.equalToSuperview().inset(24)
         }
     }
 }
