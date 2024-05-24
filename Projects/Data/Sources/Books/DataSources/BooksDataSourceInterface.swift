@@ -1,4 +1,5 @@
 import Foundation
+import Domain
 import Moya
 import RxSwift
 
@@ -8,4 +9,5 @@ public protocol BooksDataSourceInterface {
     func likeBooks(isbn: String) -> Completable
     func fetchDetail(isbn: String) -> Single<Response>
     func fetchReview(isbn: String) -> Single<Response>
+    func writeReview(isbn: String, request: ReviewWriteRequest) -> Completable
 }
