@@ -35,6 +35,11 @@ let dependencies = Dependencies(
             url: "https://github.com/onevcat/Kingfisher.git",
             requirement: .upToNextMajor(from: "7.4.1")
         ),
+        // RxGesture
+        .remote(
+            url: "https://github.com/RxSwiftCommunity/RxGesture.git",
+            requirement: .upToNextMajor(from: "4.0.0")
+        ),
         //Xquare_DesignSystem
         .remote(
             url:"https://github.com/team-xquare/xquare-design-system-iOS",

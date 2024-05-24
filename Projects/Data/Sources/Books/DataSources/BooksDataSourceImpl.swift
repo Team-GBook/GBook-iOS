@@ -6,7 +6,6 @@ import RxMoya
 import AppNetwork
 
 public class BooksDataSourceImpl: BooksDataSourceInterface {
-
     private let provider = MoyaProvider<BooksAPI>(plugins: [MoyaLoggingPlugin()])
     public static let shard = BooksDataSourceImpl()
 
@@ -26,6 +25,12 @@ public class BooksDataSourceImpl: BooksDataSourceInterface {
     public func fetchReview(isbn: String) -> RxSwift.Single<Moya.Response> {
         return provider.rx.request(.fetchReviews(isbn: isbn))
             .filterSuccessfulStatusCodes()
+    }
+
+    public func writeReview(isbn: String, request: ReviewWriteRequest) -> Completable {
+        return provider.rx.request(.writeReview(isbn: isbn, request: request))
+            .filterSuccessfulStatusCodes()
+            .asCompletable()
     }
     
 

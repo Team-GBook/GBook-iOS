@@ -1,4 +1,5 @@
 import Moya
+import Domain
 import Foundation
 import Core
 
@@ -7,9 +8,8 @@ public enum BooksAPI {
     case fetchBestSeller
     case likeBook(isbn: String)
     case fetchDetailBook(isbn: String)
-
     case fetchReviews(isbn: String)
-
+    case writeReview(isbn: String, request: ReviewWriteRequest)
 }
 
 extension BooksAPI: TargetType {
@@ -30,6 +30,9 @@ extension BooksAPI: TargetType {
 
         case .fetchReviews(let isbn):
             return "/reviews/\(isbn)"
+
+        case .writeReview(let isbn, _):
+            return "/reviews/\(isbn)"
         }
     }
     
@@ -42,6 +45,8 @@ extension BooksAPI: TargetType {
             return .get
         case .likeBook:
             return .put
+        case .writeReview:
+            return .post
         }
     }
     
@@ -57,6 +62,8 @@ extension BooksAPI: TargetType {
                 parameters: [
                     "start": 1
                 ], encoding: URLEncoding.queryString)
+        case .writeReview(_, let request):
+            return .requestJSONEncodable(request)
         default:
             return .requestPlain
         }

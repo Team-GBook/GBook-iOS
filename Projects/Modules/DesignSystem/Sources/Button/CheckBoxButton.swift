@@ -36,7 +36,7 @@ public class CheckBoxButton: UIButton {
     }
 }
 
-public enum Genre: String, CaseIterable {
+public enum Genre: String, CaseIterable, Codable {
     case novel = "소설"
     case comic = "만화"
     case fairyTale = "동화"
@@ -45,3 +45,4 @@ public enum Genre: String, CaseIterable {
     case poetry = "시"
     case biography = "전기"
 }
+

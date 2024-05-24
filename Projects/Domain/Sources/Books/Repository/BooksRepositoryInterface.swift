@@ -6,4 +6,5 @@ public protocol BooksRepositoryInterface {
     func fetchBestSeller() -> Single<BookListEntity>
     func likeBook(isbn: String) -> Completable
     func fetchReview(isbn: String) -> Single<BookReviewListEntity>
+    func writeReview(isbn: String, request: ReviewWriteRequest) -> Completable
 }
