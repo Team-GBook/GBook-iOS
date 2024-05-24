@@ -25,7 +25,7 @@ extension BooksDI {
             fetchBestSellerUseCase: fetchBestSellerUseCase,
             likeBookUseCase: likeBookUseCase,
             fetchDetailBookUseCase: fetchDetailBookuseCase,
-            fetchReviewUseCase: fetchReviewUseCase
+            fetchReviewUseCase: fetchReviewUseCase,
             writeReviewUseCase: writeReviewUseCase
         )
     }
