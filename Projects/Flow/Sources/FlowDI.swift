@@ -16,6 +16,9 @@ public struct FlowDI {
     public let homeViewModel: HomeViewModel
     public let bookSearchViewModel: BookSearchViewModel
     public let bookDetailViewModel: BookDetailViewModel
+
+    //Reviews
+    public let bookReviewWriteViewModel: BookReviewWriteViewModel
 }
 
 extension FlowDI {
@@ -40,6 +43,10 @@ extension FlowDI {
             fetchBestSellerUseCase: booksDI.fetchBestSellerUseCase,
             likeBookUseCase: booksDI.likeBookUseCase
         )
+        let bookReviewWriteViewModel = BookReviewWriteViewModel(
+            fetchDetailBookUseCase: booksDI.fetchDetailBookUseCase,
+            writeReviewUseCase: booksDI.writeReviewUseCase
+        )
         return .init(
             onboardingViewModel: onboardingViewModel,
             loginViewModel: loginViewModel,
@@ -48,7 +55,9 @@ extension FlowDI {
             signUpViewModel: signupViewModel,
             //books
             homeViewModel: homeViewModel,
-            bookSearchViewModel: booksSearchViewModel, bookDetailViewModel: bookDetailViewModel
+            bookSearchViewModel: booksSearchViewModel, 
+            bookDetailViewModel: bookDetailViewModel,
+            bookReviewWriteViewModel: bookReviewWriteViewModel
         )
     }
 }

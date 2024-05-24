@@ -8,7 +8,7 @@ public struct ReviewWriteRequest: Encodable {
     public let analysis: String
     public let genre: String
 
-    init(title: String, review: String, reconstruction: String, analysis: String, genre: String) {
+    public init(title: String, review: String, reconstruction: String, analysis: String, genre: String) {
         self.title = title
         self.review = review
         self.reconstruction = reconstruction

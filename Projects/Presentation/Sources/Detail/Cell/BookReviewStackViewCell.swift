@@ -7,9 +7,7 @@ import RxSwift
 import Kingfisher
 import Core
 
-class BookReviewTableViewCell: BaseTableViewCell<BookReviewElement> {
-
-    static let cellIdentifier: String = "BookReviewTableViewCell"
+class BookReviewStackViewCell: BaseView<BookReviewElement> {
     var disposeBag = DisposeBag()
     var isbn: String = ""
     let cellBackgroundView = UIView()

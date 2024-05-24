@@ -27,13 +27,8 @@ public class HomeFlow: Flow {
             return navigateToSearch()
         case .bookReviewIsRequired(let isbn):
             return navigateToBookDetail(isbn: isbn)
-        case .bookReviewWriteIsRequired(let bookImage, let bookTitle, let author, let publisher):
-            return navigateToBookReportWrite(
-                bookImage: bookImage,
-                bookTitle: bookTitle,
-                author: author,
-                publisher: publisher
-            )
+        case .bookReviewWriteIsRequired(let isbn):
+            return navigateToBookReportWrite(isbn: isbn)
         default:
             return .none
         }
@@ -57,23 +52,24 @@ public class HomeFlow: Flow {
     }
     private func navigateToBookDetail(isbn: String) -> FlowContributors {
         let bookDetailViewController = BookDetailViewController(viewModel: container.bookDetailViewModel)
-        bookDetailViewController.isbn = isbn
+        bookDetailViewController.viewModel.isbn = isbn
         self.rootViewController.pushViewController(bookDetailViewController, animated: true)
         return .one(flowContributor: .contribute(
             withNextPresentable: bookDetailViewController,
-            withNextStepper: OneStepper(withSingleStep: AppStep.bookReviewIsRequired(isbn: isbn))
-        ))
+            withNextStepper: bookDetailViewController.viewModel)
+        )
     }
     private func navigateToBookReportWrite(
-        bookImage: URL,
-        bookTitle: String,
-        author: String,
-        publisher: String
+        isbn: String
     ) -> FlowContributors {
-        let bookReportWriteViewController = BookReviewWriteViewContler()
-        rootViewController.pushViewController(bookReportWriteViewController, animated: true)
+        let bookReviewWriteViewContler = BookReviewWriteViewContler(
+            viewModel: container.bookReviewWriteViewModel
+        )
+        bookReviewWriteViewContler.viewModel.isbn = isbn
+        print("12ij41j")
+        rootViewController.pushViewController(bookReviewWriteViewContler, animated: true)
         return .one(flowContributor: .contribute(
-            withNextPresentable: bookReportWriteViewController,
+            withNextPresentable: bookReviewWriteViewContler,
             withNextStepper: OneStepper(withSingleStep: AppStep.error)))
     }
 }

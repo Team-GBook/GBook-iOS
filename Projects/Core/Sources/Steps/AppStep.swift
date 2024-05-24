@@ -12,7 +12,7 @@ public enum AppStep: Step {
     case homeIsRequired
     case searchIsRequired
     case bookReviewIsRequired(isbn: String)
-    case bookReviewWriteIsRequired(bookImage: URL, bookTitle: String, author: String, publisher: String)
+    case bookReviewWriteIsRequired(isbn: String)
 
     case testIsRequired
     case error

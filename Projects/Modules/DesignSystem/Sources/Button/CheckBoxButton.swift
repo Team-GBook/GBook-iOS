@@ -44,5 +44,30 @@ public enum Genre: String, CaseIterable, Codable {
     case selfDevelopment = "자기계발"
     case poetry = "시"
     case biography = "전기"
+
+    public var eng: String {
+        switch self {
+        case .novel:
+            "NOVEL"
+
+        case .comic:
+            "COMICS"
+
+        case .fairyTale:
+            "FAIRY_TALE"
+
+        case .drawing:
+            "PICTURE"
+
+        case .selfDevelopment:
+            "DEVELOP"
+
+        case .poetry:
+            "POEM"
+
+        case .biography:
+            "BIOGRAPHY"
+        }
+    }
 }
 

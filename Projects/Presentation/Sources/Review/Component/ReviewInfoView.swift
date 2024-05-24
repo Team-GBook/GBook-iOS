@@ -9,7 +9,7 @@ class ReviewInfoView: UIView {
     private let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .medium)
     }
-    private let textView = GBTextView()
+    let textView = GBTextView()
     
     init(title: String, placeholder: String, textViewHeight: CGFloat = 150) {
         super.init(frame: .zero)

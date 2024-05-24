@@ -15,7 +15,7 @@ public class BookView: BaseView<BookDetailsEntity> {
 
     private let bookTitleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .bold)
-        $0.numberOfLines = 4
+        $0.numberOfLines = 2
     }
     private let authorLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)

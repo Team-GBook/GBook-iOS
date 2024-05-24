@@ -8,6 +8,16 @@ import RxSwift
 public class BookReviewWriteViewContler: UIViewController {
     private let disposeBag = DisposeBag()
     private let selectedGenre = PublishRelay<Genre>()
+    private let viewDidAppear = PublishRelay<Void>()
+    public let viewModel: BookReviewWriteViewModel
+    public init(viewModel: BookReviewWriteViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -19,6 +29,11 @@ public class BookReviewWriteViewContler: UIViewController {
     private let bookView = BookView().then {
         $0.backgroundColor = .white
     }
+    private let titleInfoView = ReviewInfoView(
+        title: "제목",
+        placeholder: "독후감의 제목을 적어주세요.",
+        textViewHeight: 150
+    )
     private let translateInfoView = ReviewInfoView(
         title: "해석",
         placeholder: "본인만의 해석을 적어주세요.",
@@ -45,9 +60,29 @@ public class BookReviewWriteViewContler: UIViewController {
         addView()
         setLayout()
     }
+    private func bind() {
+        let input = BookReviewWriteViewModel.Input(
+            viewWillAppear: viewDidAppear.asObservable(),
+            writeButtonDidTap: reviewWriteButton.rx.tap.asSignal(),
+            titleText: titleInfoView.textView.rx.text.orEmpty.asDriver(),
+            reviewText: reviewInfoView.textView.rx.text.orEmpty.asDriver(),
+            reconstructionText: reconstructionInfoView.textView.rx.text.orEmpty.asDriver(),
+            analysisText: reviewInfoView.textView.rx.text.orEmpty.asDriver(),
+            genre: selectedGenre.asDriver(onErrorJustReturn: .biography)
+        )
+    
+        let output = viewModel.transform(input: input)
+        output.bookDetail.asObservable()
+            .subscribe(onNext: {[weak self] items in
+                self?.bookView.configure(with: items)
+            })
+            .disposed(by: disposeBag)
+    }
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        bind()
+        self.viewDidAppear.accept(())
         genreStackView.genreDidTap = {
             self.selectedGenre.accept($0)
         }
@@ -57,18 +92,6 @@ public class BookReviewWriteViewContler: UIViewController {
                 self.genreStackView.updateGenre($0)
             }
             .disposed(by: disposeBag)
-        
-        bookView.configure(with: .init(
-            title: "asfd",
-            author: "Asdf",
-            isbn: "Asf",
-            cover:"https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
-            publisher: "Asf",
-            description: "asdf",
-            reviewCount: 3,
-            likeCount: 4,
-            isLiked: false
-        ))
     }
     
 }
@@ -85,6 +108,7 @@ extension BookReviewWriteViewContler {
  
         [
             bookView,
+            titleInfoView,
             translateInfoView,
             reconstructionInfoView,
             reviewInfoView,
