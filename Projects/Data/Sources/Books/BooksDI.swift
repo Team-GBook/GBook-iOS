@@ -6,6 +6,8 @@ public struct BooksDI {
     public let bookSearchUseCase: BookSearchUseCase
     public let fetchBestSellerUseCase: FetchBestSellerUseCase
     public let likeBookUseCase: LikeBookUseCase
+    public let fetchDetailBookUseCase: FetchDetailBookUseCase
+    public let fetchReviewUseCase: FetchReviewUseCase
 }
 
 extension BooksDI {
@@ -13,11 +15,15 @@ extension BooksDI {
         let booksRepositoryImpl = BooksRepositoryImpl()
         let searchBooksUseCase = BookSearchUseCase(repository: booksRepositoryImpl)
         let fetchBestSellerUseCase = FetchBestSellerUseCase(repository: booksRepositoryImpl)
+        let fetchDetailBookuseCase = FetchDetailBookUseCase(repository: booksRepositoryImpl)
         let likeBookUseCase = LikeBookUseCase(repository: booksRepositoryImpl)
+        let fetchReviewUseCase = FetchReviewUseCase(repository: booksRepositoryImpl)
         return .init(
             bookSearchUseCase: searchBooksUseCase,
             fetchBestSellerUseCase: fetchBestSellerUseCase,
-            likeBookUseCase: likeBookUseCase
+            likeBookUseCase: likeBookUseCase,
+            fetchDetailBookUseCase: fetchDetailBookuseCase,
+            fetchReviewUseCase: fetchReviewUseCase
         )
     }
 }

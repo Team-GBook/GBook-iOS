@@ -49,30 +49,31 @@ public class BookSearchViewController: UIViewController {
             .bind(to: bookTableView.rx.items(
                 cellIdentifier: BookTableViewCell.cellIdentifier,
                 cellType: BookTableViewCell.self)
-            ) { [weak self] row, item, cell in
-                guard let self = self else { return }
-                cell.bookTitleLabel.text = item.title
-                cell.autherLabel.text = item.author
-                cell.publisherLabel.text = item.publisher
-                cell.bookImageView.kf.setImage(with: URL(string: item.cover))
-                cell.isbn = item.isbn
-                cell.heartCountLabel.text = "\(item.likeCount)"
-                
-                cell.heartButton.rx.tap
-                    .subscribe(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        self.likeAccept.accept(cell.isbn)
-//                        print("tap")
-                        var heartCount = Int(cell.heartCountLabel.text ?? "0")
-                        heartCount! += 1
-                        cell.heartCountLabel.text = "\(heartCount ?? 0)"
-
-                        let image = UIImage(named: "redHeart")
-                        cell.heartButton.setImage(image, for: .normal)
-                        cell.heartButton.tintColor = .red
-
-                    })
-                    .disposed(by: cell.disposeBag)
+            ) { row, item, cell in
+                cell.configure(with: item)
+//                guard let self = self else { return }
+//                cell.bookTitleLabel.text = item.title
+//                cell.autherLabel.text = item.author
+//                cell.publisherLabel.text = item.publisher
+//                cell.bookImageView.kf.setImage(with: URL(string: item.cover))
+//                cell.isbn = item.isbn
+//                cell.heartCountLabel.text = "\(item.likeCount)"
+//                
+//                cell.heartButton.rx.tap
+//                    .subscribe(onNext: { [weak self] in
+//                        guard let self = self else { return }
+//                        self.likeAccept.accept(cell.isbn)
+////                        print("tap")
+//                        var heartCount = Int(cell.heartCountLabel.text ?? "0")
+//                        heartCount! += 1
+//                        cell.heartCountLabel.text = "\(heartCount ?? 0)"
+//
+//                        let image = UIImage(named: "redHeart")
+//                        cell.heartButton.setImage(image, for: .normal)
+//                        cell.heartButton.tintColor = .red
+//
+//                    })
+//                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
     }

@@ -14,16 +14,20 @@ public class BooksRepositoryImpl: BooksRepositoryInterface {
     public func fetchBestSeller() -> RxSwift.Single<Domain.BookListEntity> {
         return dataSource.fetchBestSeller()
             .map(BookListDTO.self)
-            .map { $0.toDomain() }    }
+            .map { $0.toDomain() } }
     
     public func likeBook(isbn: String) -> RxSwift.Completable {
         return dataSource.likeBooks(isbn: isbn)
+    }
+    public func fetchDetailBook(isbn: String) -> RxSwift.Single<Domain.BookDetailsEntity> {
+        return dataSource.fetchDetail(isbn: isbn)
+            .map(BookDetailDTO.self)
+            .map { $0.toDomain() }
     }
     public func fetchReview(isbn: String) -> RxSwift.Single<Domain.BookReviewListEntity> {
         return dataSource.fetchReview(isbn: isbn)
             .map(BookReviewListDTO.self)
             .map { $0.toDomain() }
     }
-    
 
 }

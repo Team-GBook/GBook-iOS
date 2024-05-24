@@ -46,13 +46,14 @@ extension AppFlow {
     }
     private func navigateToHome() -> FlowContributors {
         print("homeee")
-        let homeFlow = HomeFlow(rootViewController: HomeViewController(viewModel: container.homeViewModel))
+        let homeFlow = HomeFlow()
         Flows.use(
             homeFlow,
             when: .created) { root in
                 self.window.rootViewController = root
 //                root.modalPresentationStyle = .fullScreen
 //                root.modalTransitionStyle = .crossDissolve
+                print(root)
             }
         return .one(flowContributor: .contribute(
             withNextPresentable: homeFlow,
@@ -62,7 +63,7 @@ extension AppFlow {
     }
     private func navigateTest() -> FlowContributors {
 //        let vc = BookSearchViewController(viewModel: container.bookSearchViewModel)
-        let vc = BookReviewWriteViewContler()
+        let vc = BookDetailViewController(viewModel: container.bookDetailViewModel)
         self.window.rootViewController = vc
         return .one(flowContributor: .contribute(
             withNextPresentable: vc,

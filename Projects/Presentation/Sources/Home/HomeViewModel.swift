@@ -22,7 +22,7 @@ public class HomeViewModel: ViewModelType, Stepper {
     }
     public struct Input {
         let searchButtonDidTapped: Observable<Void>
-        let itemSelected: Observable<(String?, UIImage?, String?, String?, String?)>
+        let itemSelected: Observable<String>
         let likeAccept: Observable<String>
         let viewWillAppear: Observable<Void>
     }
@@ -50,16 +50,7 @@ public class HomeViewModel: ViewModelType, Stepper {
             .subscribe()
             .disposed(by: disposeBag)
         input.itemSelected
-            .flatMapLatest { isbn, image, title, author, publisher -> Observable<RxFlow.Step> in
-                guard let isbn = isbn,
-                      let image = image,
-                      let title = title,
-                      let author = author,
-                      let publisher = publisher
-                else { return .never()}
-                   let step = AppStep.bookReviewIsRequired(bookImage: image, bookTitle: title, author: author, publisher: publisher)
-                   return Observable.just(step)
-               }
+            .map { AppStep.bookReviewIsRequired(isbn: $0) }
             .bind(to: steps)
             .disposed(by: disposeBag)
         return Output(books: books.asSignal())
