@@ -75,15 +75,16 @@ extension OnboardingFlow {
         )
     }
     private func presentHome() -> FlowContributors {
+        return .end(forwardToParentFlowWithStep: AppStep.homeIsRequired)
 //        let homeFlow = HomeFlow(rootViewController: HomeViewController(viewModel: container.homeViewModel))
 //        Flows.use(
 //            homeFlow,
 //            when: .created
 //        ) { root in
-////                self.rootViewController.setViewControllers(
-////                    [root],
-////                    animated: true
-////                )
+//                self.rootViewController.setViewControllers(
+//                    [root],
+//                    animated: true
+//                )
 //            
 //            }
 //        return .one(flowContributor: .contribute(
@@ -91,6 +92,6 @@ extension OnboardingFlow {
 //            withNextStepper: OneStepper(withSingleStep: AppStep.homeIsRequired)
 //            )
 //        )
-        return .end(forwardToParentFlowWithStep: AppStep.homeIsRequired)
+//        return .end(forwardToParentFlowWithStep: AppStep.homeIsRequired)
     }
 }

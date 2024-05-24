@@ -8,10 +8,10 @@ public class HomeFlow: Flow {
 
 
     private let container = FlowDI.shared
-    private let rootViewController: HomeViewController
+    private let rootViewController: BaseNavigationController
 
-    public init(rootViewController: HomeViewController) {
-        self.rootViewController = HomeViewController(viewModel: container.homeViewModel)
+    public init() {
+        self.rootViewController = BaseNavigationController()
     }
 
     public var root: Presentable {
@@ -25,6 +25,8 @@ public class HomeFlow: Flow {
             return navigateToHome()
         case .searchIsRequired:
             return navigateToSearch()
+        case .bookReviewIsRequired(let isbn):
+            return navigateToBookDetail(isbn: isbn)
         case .bookReviewWriteIsRequired(let bookImage, let bookTitle, let author, let publisher):
             return navigateToBookReportWrite(
                 bookImage: bookImage,
@@ -37,18 +39,29 @@ public class HomeFlow: Flow {
         }
     }
     private func navigateToHome() -> FlowContributors {
-        self.rootViewController.navigationController?.setViewControllers([rootViewController], animated: true)
+        let homeViewController = HomeViewController(viewModel: container.homeViewModel)
+//        self.rootViewController.navigationBar.isHidden = true
+        self.rootViewController.setViewControllers([homeViewController], animated: true)
         return .one(flowContributor: .contribute(
-            withNextPresentable: rootViewController,
-            withNextStepper: rootViewController.viewModel
+            withNextPresentable: homeViewController,
+            withNextStepper: homeViewController.viewModel
         ))
     }
     private func navigateToSearch() -> FlowContributors {
         let searchViewController = BookSearchViewController(viewModel: container.bookSearchViewModel)
-        self.rootViewController.navigationController?.pushViewController(searchViewController, animated: true)
+        self.rootViewController.pushViewController(searchViewController, animated: true)
         return .one(flowContributor: .contribute(
             withNextPresentable: searchViewController,
             withNextStepper: searchViewController.viewModel
+        ))
+    }
+    private func navigateToBookDetail(isbn: String) -> FlowContributors {
+        let bookDetailViewController = BookDetailViewController(viewModel: container.bookDetailViewModel)
+        bookDetailViewController.isbn = isbn
+        self.rootViewController.pushViewController(bookDetailViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: bookDetailViewController,
+            withNextStepper: OneStepper(withSingleStep: AppStep.bookReviewIsRequired(isbn: isbn))
         ))
     }
     private func navigateToBookReportWrite(
@@ -58,7 +71,7 @@ public class HomeFlow: Flow {
         publisher: String
     ) -> FlowContributors {
         let bookReportWriteViewController = BookReviewWriteViewContler()
-        rootViewController.navigationController?.pushViewController(bookReportWriteViewController, animated: true)
+        rootViewController.pushViewController(bookReportWriteViewController, animated: true)
         return .one(flowContributor: .contribute(
             withNextPresentable: bookReportWriteViewController,
             withNextStepper: OneStepper(withSingleStep: AppStep.error)))

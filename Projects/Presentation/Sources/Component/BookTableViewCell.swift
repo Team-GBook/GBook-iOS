@@ -18,22 +18,22 @@ class BookTableViewCell: BaseTableViewCell<Book> {
         $0.sizeToFit()
         $0.clipsToBounds = true
     }
-    let bookTitleLabel = UILabel().then {
+    private let bookTitleLabel = UILabel().then {
         $0.text = "내가 죽기 일주일 전"
-        $0.numberOfLines = 0
+        $0.numberOfLines = 4
         $0.font = .systemFont(ofSize: 20, weight: .bold)
     }
-    let autherLabel = UILabel().then {
+    private let autherLabel = UILabel().then {
         $0.text = "서은채 저"
         $0.textColor = .onSurface
         $0.font = .systemFont(ofSize: 16, weight: .medium)
     }
-    let publisherLabel = UILabel().then {
+    private let publisherLabel = UILabel().then {
         $0.text = "황금 가지"
         $0.textColor = .onSurface
         $0.font = .systemFont(ofSize: 16, weight: .medium)
     }
-    lazy var titleStackView = UIStackView(arrangedSubviews: [
+    private lazy var titleStackView = UIStackView(arrangedSubviews: [
         bookTitleLabel,
         autherLabel,
         publisherLabel
@@ -41,11 +41,11 @@ class BookTableViewCell: BaseTableViewCell<Book> {
         $0.axis = .vertical
         $0.spacing = 4
     }
-    let heartButton = UIButton(type: .system).then {
+    private let heartButton = UIButton(type: .system).then {
         $0.setImage(UIImage(systemName: "heart"), for: .normal)
         $0.tintColor = .black
     }
-    let heartCountLabel = UILabel().then {
+    private let heartCountLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .regular)
     }
 //    lazy var likeStackView = UIStackView(arrangedSubviews: [heartButton, heartCountLabel]).then {

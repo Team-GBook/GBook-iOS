@@ -9,6 +9,6 @@ public class AppStepper: Stepper {
     public init() { }
 
     public func readyToEmitSteps() {
-        steps.accept(AppStep.testIsRequired)
+        steps.accept(AppStep.homeIsRequired)
     }
 }

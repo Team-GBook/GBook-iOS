@@ -6,7 +6,7 @@ import Domain
 import Core
 import Kingfisher
 
-public class BookView: BaseView<Book> {
+public class BookView: BaseView<BookDetailsEntity> {
 
     private let bookImageView = UIImageView().then {
         $0.clipsToBounds = true
@@ -15,6 +15,7 @@ public class BookView: BaseView<Book> {
 
     private let bookTitleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 20, weight: .bold)
+        $0.numberOfLines = 4
     }
     private let authorLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
@@ -38,7 +39,7 @@ public class BookView: BaseView<Book> {
     }
     
 
-    public override func configure(with item: Book) {
+    public override func configure(with item: BookDetailsEntity) {
         bookImageView.kf.setImage(with: URL(string: item.cover))
         bookTitleLabel.text = item.title
         authorLabel.text = item.author

@@ -26,12 +26,16 @@ public class BooksDataSourceImpl: BooksDataSourceInterface {
         return provider.rx.request(.fetchReviews(isbn: isbn))
             .filterSuccessfulStatusCodes()
     }
+    public func fetchDetail(isbn: String) -> RxSwift.Single<Moya.Response> {
+        return provider.rx.request(.fetchDetailBook(isbn: isbn))
+            .filterSuccessfulStatusCodes()
+    }
 
     public func writeReview(isbn: String, request: ReviewWriteRequest) -> Completable {
         return provider.rx.request(.writeReview(isbn: isbn, request: request))
             .filterSuccessfulStatusCodes()
             .asCompletable()
     }
-    
+
 
 }

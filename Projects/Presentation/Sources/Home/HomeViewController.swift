@@ -9,7 +9,7 @@ public class HomeViewController: UIViewController {
 
     public let viewModel: HomeViewModel
     private let viewWillAppear = PublishRelay<Void>()
-    private let itemSelected = PublishRelay<(String?, UIImage?, String?, String?, String?)>()
+    private let itemSelected = PublishRelay<String>()
     private var disposeBag = DisposeBag()
     private let likeAccept = PublishRelay<String>()
     private let titleLabel = UILabel().then {
@@ -43,6 +43,14 @@ public class HomeViewController: UIViewController {
         $0.text = "추천 도서"
         $0.font = .systemFont(ofSize: 32, weight: .bold)
     }
+    private let recommendTableView = UITableView().then {
+        $0.register(
+            BookTableViewCell.self,
+            forCellReuseIdentifier: BookTableViewCell.cellIdentifier
+        )
+        $0.rowHeight = 172
+        $0.isScrollEnabled = false
+    }
     
     public init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -60,6 +68,7 @@ public class HomeViewController: UIViewController {
         bind()
     }
     public override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
         viewWillAppear.accept(())
     }
     private func bind() {
@@ -79,15 +88,12 @@ public class HomeViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         bestSellerTableView.rx.itemSelected
-            .map { indexPath -> (String?, UIImage?, String?, String?, String?)? in
-                guard let cell = self.bestSellerTableView.cellForRow(at: indexPath) as? BookTableViewCell else { return nil }
-                return (cell.isbn, cell.bookImageView.image, cell.bookTitleLabel.text, cell.autherLabel.text, cell.publisherLabel.text)
+            .map { index -> String in
+                guard let cell = self.bestSellerTableView.cellForRow(at: index) as? BookTableViewCell else { return "" }
+                return cell.isbn
             }
-            .compactMap { $0 }
             .bind(to: itemSelected)
             .disposed(by: disposeBag)
-
-
     }
     private func addView() {
         [

@@ -11,7 +11,7 @@ public enum AppStep: Step {
     case successSignup
     case homeIsRequired
     case searchIsRequired
-    case bookReviewIsRequired(bookImage: UIImage, bookTitle: String, author: String, publisher: String)
+    case bookReviewIsRequired(isbn: String)
     case bookReviewWriteIsRequired(bookImage: URL, bookTitle: String, author: String, publisher: String)
 
     case testIsRequired
