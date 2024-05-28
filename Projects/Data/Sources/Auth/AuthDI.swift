@@ -7,6 +7,9 @@ public struct AuthDI {
     public let sendEmailUseCase: SendEmailUseCase
     public let emailCheckUseCase: EmailCheckUseCase
     public let signupUseCase: SignupUseCase
+    public let fetchUserProfileUseCase: FetchUserProfileUseCase
+    public let editUserProfileUseCase: EditUserProfileUseCase
+    public let uploadUserProfileUseCase: UploadUserProfileUseCase
 }
 
 extension AuthDI {
@@ -17,12 +20,18 @@ extension AuthDI {
         let sendEmailUseCase = SendEmailUseCase(repository: authRepositoryImpl)
         let emailCheckUseCase = EmailCheckUseCase(repository: authRepositoryImpl)
         let signupUseCase = SignupUseCase(repository: authRepositoryImpl)
+        let fetchUserProfileUseCase = FetchUserProfileUseCase(repository: authRepositoryImpl)
+        let editUserProfileUseCase = EditUserProfileUseCase(repository: authRepositoryImpl)
+        let uploadUserProfileUseCase = UploadUserProfileUseCase(repository: authRepositoryImpl)
 
         return .init(
             loginUseCase: loginUseCase,
             sendEmailUseCase: sendEmailUseCase,
             emailCheckUseCase: emailCheckUseCase,
-            signupUseCase: signupUseCase
+            signupUseCase: signupUseCase,
+            fetchUserProfileUseCase: fetchUserProfileUseCase,
+            editUserProfileUseCase: editUserProfileUseCase,
+            uploadUserProfileUseCase: uploadUserProfileUseCase
         )
     }
 }
