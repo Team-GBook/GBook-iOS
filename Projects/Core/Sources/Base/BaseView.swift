@@ -5,6 +5,7 @@ open class BaseView<T>: UIView {
     var item: T?
     public override init(frame: CGRect) {
         super.init(frame: .zero)
+        initalize()
         commonInit()
     }
     required public init?(coder: NSCoder) {
@@ -15,6 +16,7 @@ open class BaseView<T>: UIView {
         addView()
         setLayout()
     }
+    open func initalize() { }
     open func addView() { }
     open func setLayout() { }
     open func configure(with item: T) {
