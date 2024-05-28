@@ -8,6 +8,9 @@ public enum AuthAPI {
         password: String
     )
     case sendEmail(email: String)
+    case fetchUserProfile
+    case editProfile(name: String)
+    case uploadImage(image: Data)
     case emailCheck(
         email: String,
         code: Int
@@ -29,6 +32,12 @@ extension AuthAPI: TargetType {
         switch self {
         case .login:
             return "/users/login"
+        case .fetchUserProfile:
+            return "/users/"
+        case .uploadImage:
+            return "/users/profile"
+        case .editProfile:
+            return "/users"
         case .sendEmail:
             return "/users/email"
         case .emailCheck:
@@ -40,8 +49,12 @@ extension AuthAPI: TargetType {
     
     public var method: Moya.Method {
         switch self {
+        case .fetchUserProfile:
+            return .get
         case .login, .sendEmail, .emailCheck, .signup:
             return .post
+        case .editProfile, .uploadImage:
+            return .patch
         }
     }
     
@@ -57,6 +70,20 @@ extension AuthAPI: TargetType {
             return .requestParameters(parameters: [
                 "email": email
             ],encoding: URLEncoding.queryString)
+        case .editProfile(let name):
+            return .requestParameters(
+                parameters: [
+                    "nickName": name,
+                    "genre": "COMICS"
+                ], encoding: JSONEncoding.default)
+        case .uploadImage(let image):
+            let pngData = MultipartFormData(
+                      provider: .data(image),
+                      name: "file",
+                      fileName: "file.png",
+                      mimeType: "file/png"
+                  )
+            return .uploadMultipart([pngData])
         case .emailCheck(let email, let code):
             return .requestParameters(
                 parameters: [
@@ -71,10 +98,17 @@ extension AuthAPI: TargetType {
                     "nickName": nickName,
                     "genre": genre
                 ], encoding: JSONEncoding.default)
+        default:
+            return .requestPlain
         }
     }
     
     public var headers: [String : String]? {
-        return .none
+        switch self {
+        case .editProfile, .uploadImage, .fetchUserProfile:
+            return TokenStorage.shared.toHeader(.accessToken)
+        default:
+            return .none
+        }
     }
 }

@@ -29,6 +29,20 @@ public class AuthRepositoryImpl: AuthRepositoryInterface {
     public func sendEmail(email: String) -> RxSwift.Completable {
         return dataSource.sendEmail(email: email)
     }
+
+    public func fetchUserProfile() -> RxSwift.Single<Domain.UserEntity> {
+        return dataSource.fetchUserProfile()
+            .map(UserDTO.self)
+            .map { $0.toDomain() }
+    }
+    
+    public func editUserProfile(nickName: String, genre: String) -> RxSwift.Completable {
+        return dataSource.editUserProfile(nickName: nickName, genre: genre)
+    }
+    
+    public func uploadProfile(imageData: Data) -> RxSwift.Completable {
+        return dataSource.uploadProfile(imageData: imageData)
+    }
     
     public func emailCheck(email: String, code: Int) -> RxSwift.Completable {
         return dataSource.emailCheck(email: email, code: code)
