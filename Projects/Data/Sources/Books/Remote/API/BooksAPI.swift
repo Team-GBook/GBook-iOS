@@ -9,7 +9,9 @@ public enum BooksAPI {
     case likeBook(isbn: String)
     case fetchDetailBook(isbn: String)
     case fetchReviews(isbn: String)
-    case writeReview(isbn: String, request: ReviewWriteRequest)
+    case writeReview(isbn: String, request: ReviewRequest)
+//    case patchReview(isbn: String)
+//    case editReview(isbn: String)
 }
 
 extension BooksAPI: TargetType {
@@ -33,6 +35,8 @@ extension BooksAPI: TargetType {
 
         case .writeReview(let isbn, _):
             return "/reviews/\(isbn)"
+//        case .patchReview(let isbn):
+//            return "reviews/"
         }
     }
     

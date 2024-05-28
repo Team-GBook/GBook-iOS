@@ -29,7 +29,7 @@ public class BooksRepositoryImpl: BooksRepositoryInterface {
             .map(BookReviewListDTO.self)
             .map { $0.toDomain() }
     }
-    public func writeReview(isbn: String, request: ReviewWriteRequest) -> Completable {
+    public func writeReview(isbn: String, request: ReviewRequest) -> Completable {
         return dataSource.writeReview(isbn: isbn, request: request)
     }
 

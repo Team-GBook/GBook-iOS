@@ -6,6 +6,7 @@ public struct BookReviewListDTO: Decodable {
 }
 
 public struct BookRevieElementDTO: Decodable {
+    let id: String
     let isbn: String
     let title: String
     let user: String
@@ -20,6 +21,7 @@ extension BookReviewListDTO {
         return BookReviewListEntity(
             reviewList: reviewList.map { item in
                     .init(
+                        id: item.id,
                         isbn: item.isbn,
                         title: item.title,
                         user: item.user,
