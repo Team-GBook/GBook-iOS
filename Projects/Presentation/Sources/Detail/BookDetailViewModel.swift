@@ -24,6 +24,7 @@ public class BookDetailViewModel: ViewModelType, Stepper {
 
     public struct Input {
         let viewWillAppear: Observable<Void>
+        let reviewDetailIsRequired: Observable<String>
         let navigateToReviewWrite: Signal<Void>
     }
     public struct Output {
@@ -54,7 +55,13 @@ public class BookDetailViewModel: ViewModelType, Stepper {
             }
             .bind(to: steps)
             .disposed(by: disposeBag)
-
+        input.reviewDetailIsRequired.asObservable()
+            .map { reviewId in
+                AppStep.bookReviewDetailIsRequired(reviewId: reviewId)
+            }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
+        
         return Output(
             bookDetail: booksDetail.asSignal(),
             reviewList: reviewList.asSignal()

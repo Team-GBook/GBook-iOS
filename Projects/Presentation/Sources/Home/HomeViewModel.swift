@@ -22,6 +22,7 @@ public class HomeViewModel: ViewModelType, Stepper {
     }
     public struct Input {
         let searchButtonDidTapped: Observable<Void>
+        let profileButtonDidTaped: Observable<Void>
         let itemSelected: Observable<String>
         let likeAccept: Observable<String>
         let viewWillAppear: Observable<Void>
@@ -34,6 +35,10 @@ public class HomeViewModel: ViewModelType, Stepper {
 
         input.searchButtonDidTapped
             .map { AppStep.searchIsRequired }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
+        input.profileButtonDidTaped
+            .map { AppStep.profileIsRequired }
             .bind(to: steps)
             .disposed(by: disposeBag)
         input.viewWillAppear
