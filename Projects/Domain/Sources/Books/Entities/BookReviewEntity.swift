@@ -8,6 +8,7 @@ public struct BookReviewListEntity {
 }
 
 public struct BookReviewElement {
+    public let id: String
     public let isbn: String
     public let title: String
     public let user: String
@@ -17,6 +18,7 @@ public struct BookReviewElement {
     public let commentCount: Int
 
     public init(
+        id: String,
         isbn: String,
         title: String,
         user: String, 
@@ -25,6 +27,7 @@ public struct BookReviewElement {
         likeCount: Int,
         commentCount: Int
     ) {
+        self.id = id
         self.isbn = isbn
         self.title = title
         self.user = user
