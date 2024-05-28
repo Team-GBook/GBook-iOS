@@ -9,7 +9,7 @@ public class WriteReviewUseCase {
         self.repository = repository
     }
 
-    public func excute(isbn: String, request: ReviewWriteRequest) -> Completable {
+    public func excute(isbn: String, request: ReviewRequest) -> Completable {
         self.repository.writeReview(isbn: isbn, request: request)
     }
 }
