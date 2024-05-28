@@ -74,6 +74,7 @@ public class HomeViewController: UIViewController {
     private func bind() {
         let input = HomeViewModel.Input(
             searchButtonDidTapped: searchButton.rx.tap.asObservable(), 
+            profileButtonDidTaped: profileButton.rx.tap.asObservable(),
             itemSelected: itemSelected.asObservable(),
             likeAccept: likeAccept.asObservable(),
             viewWillAppear: viewWillAppear.asObservable()

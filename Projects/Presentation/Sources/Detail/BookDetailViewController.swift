@@ -14,8 +14,8 @@ public class BookDetailViewController: UIViewController {
     private let bookView = BookView()
     private let disposeBag = DisposeBag()
     private let viewWillAppear = PublishRelay<Void>()
+    private let commentButtonDidTapped = PublishRelay<String>()
     public let viewModel: BookDetailViewModel
-    
     private let descriptionView = DescriptionView()
     private let reviewStackView = ReviewStackView()
     private let reviewWriteButton = GBButton(type: .system).then {
@@ -46,6 +46,7 @@ public class BookDetailViewController: UIViewController {
     private func bind() {
         let input = BookDetailViewModel.Input(
             viewWillAppear: viewWillAppear.asObservable(), 
+            reviewDetailIsRequired: commentButtonDidTapped.asObservable(), 
             navigateToReviewWrite: reviewWriteButton.rx.tap.asSignal()
         )
         let output = viewModel.transform(input: input)
@@ -55,11 +56,15 @@ public class BookDetailViewController: UIViewController {
                 self?.descriptionView.configure(with: items.description)
             })
             .disposed(by: disposeBag)
+
         output.reviewList.asObservable()
             .bind {
                 self.reviewStackView.setReview($0)
+                self.reviewStackView.genreStackViewCell.delegate = self
             }
             .disposed(by: disposeBag)
+        
+
     }
     private func addView() {
         [
@@ -93,5 +98,13 @@ public class BookDetailViewController: UIViewController {
             $0.height.equalTo(48)
         }
     }
+    
+}
+
+extension BookDetailViewController: BookReviewStackViewCellDelegate {
+    func commentButtonDidTapped(id: String) {
+        commentButtonDidTapped.accept(id)
+    }
+    
     
 }
