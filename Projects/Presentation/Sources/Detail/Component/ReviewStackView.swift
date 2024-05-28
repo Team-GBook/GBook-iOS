@@ -4,7 +4,8 @@ import SnapKit
 import Then
 
 class ReviewStackView: UIView {
-    let genreStackViewCell = BookReviewStackViewCell()
+    public var reviewDidTap: ((String) -> Void)?
+
     private let titleLabel = UILabel().then {
         $0.text = "독후감"
         $0.font = .systemFont(ofSize: 20, weight: .medium)
@@ -31,13 +32,24 @@ class ReviewStackView: UIView {
         }
     }
     func setReview(_ review: [BookReviewElement]) {
+        self.backStackView.subviews.forEach {
+            self.backStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+
         review.forEach { data in
-//            let genreStackViewCell = BookReviewStackViewCell().then {
-//                $0.configure(with: data)
-//            }
-            genreStackViewCell.configure(with: data)
-            self.backStackView.addArrangedSubview(genreStackViewCell)
+            let bookReviewStackViewCell = BookReviewStackViewCell().then {
+                $0.configure(with: data)
+            }
+            bookReviewStackViewCell.delegate = self
+            self.backStackView.addArrangedSubview(bookReviewStackViewCell)
         }
     }
     
+}
+
+extension ReviewStackView: BookReviewStackViewCellDelegate {
+    func commentButtonDidTapped(id: String) {
+        self.reviewDidTap?(id)
+    }
 }

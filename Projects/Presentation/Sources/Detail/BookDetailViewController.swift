@@ -59,8 +59,11 @@ public class BookDetailViewController: UIViewController {
 
         output.reviewList.asObservable()
             .bind {
+                print("Sdf")
                 self.reviewStackView.setReview($0)
-                self.reviewStackView.genreStackViewCell.delegate = self
+                self.reviewStackView.reviewDidTap = {
+                    self.commentButtonDidTapped.accept($0)
+                }
             }
             .disposed(by: disposeBag)
         
@@ -98,13 +101,5 @@ public class BookDetailViewController: UIViewController {
             $0.height.equalTo(48)
         }
     }
-    
-}
-
-extension BookDetailViewController: BookReviewStackViewCellDelegate {
-    func commentButtonDidTapped(id: String) {
-        commentButtonDidTapped.accept(id)
-    }
-    
     
 }
