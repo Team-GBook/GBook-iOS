@@ -1,7 +1,6 @@
 import Foundation
-import DesignSystem
 
-public struct ReviewWriteRequest: Encodable {
+public struct ReviewRequest: Encodable {
     public let title: String
     public let review: String
     public let reconstruction: String
