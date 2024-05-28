@@ -20,6 +20,7 @@ public class AuthDataSourceImpl: AuthDataSourceInterface {
             .filterSuccessfulStatusCodes()
             .asCompletable()
     }
+    
     public func emailCheck(email: String, code: Int) -> Completable {
         return provider.rx.request(.emailCheck(email: email, code: code))
             .filterSuccessfulStatusCodes()
@@ -40,5 +41,21 @@ public class AuthDataSourceImpl: AuthDataSourceInterface {
         ))
         .filterSuccessfulStatusCodes()
         .asCompletable()
+    }
+    public func fetchUserProfile() -> RxSwift.Single<Response> {
+        return provider.rx.request(.fetchUserProfile)
+            .filterSuccessfulStatusCodes()
+    }
+    
+    public func editUserProfile(nickName: String, genre: String) -> RxSwift.Completable {
+        return provider.rx.request(.editProfile(name: nickName))
+            .filterSuccessfulStatusCodes()
+            .asCompletable()
+    }
+
+    public func uploadProfile(imageData: Data) -> RxSwift.Completable {
+        return provider.rx.request(.uploadImage(image: imageData))
+            .filterSuccessfulStatusCodes()
+            .asCompletable()
     }
 }
