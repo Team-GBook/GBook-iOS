@@ -4,6 +4,7 @@ import SnapKit
 import Then
 
 class ReviewStackView: UIView {
+    let genreStackViewCell = BookReviewStackViewCell()
     private let titleLabel = UILabel().then {
         $0.text = "독후감"
         $0.font = .systemFont(ofSize: 20, weight: .medium)
@@ -31,9 +32,10 @@ class ReviewStackView: UIView {
     }
     func setReview(_ review: [BookReviewElement]) {
         review.forEach { data in
-            let genreStackViewCell = BookReviewStackViewCell().then {
-                $0.configure(with: data)
-            }
+//            let genreStackViewCell = BookReviewStackViewCell().then {
+//                $0.configure(with: data)
+//            }
+            genreStackViewCell.configure(with: data)
             self.backStackView.addArrangedSubview(genreStackViewCell)
         }
     }

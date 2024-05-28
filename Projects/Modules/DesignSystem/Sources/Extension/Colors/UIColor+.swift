@@ -5,6 +5,15 @@ extension UIColor {
     //MARK: MAIN
     public static let primary = UIColor(named: "primary60")
 
+    public static let netrual10 = UIColor(named: "netrual10")
+    public static let netrual20 = UIColor(named: "netrual20")
+    public static let netrual30 = UIColor(named: "netrual30")
+    public static let netrual40 = UIColor(named: "netrual40")
+    public static let netrual50 = UIColor(named: "netrual50")
+    public static let netrual60 = UIColor(named: "netrual60")
+    public static let netrual70 = UIColor(named: "netrual70")
+    public static let netrual80 = UIColor(named: "netrual80")
+    
     //MARK: PRIMARY
     public static let primary10 = UIColor(named: "primary10")
     public static let primary20 = UIColor(named: "primary20")
