@@ -12,3 +12,4 @@ public class AppStepper: Stepper {
         steps.accept(AppStep.homeIsRequired)
     }
 }
+

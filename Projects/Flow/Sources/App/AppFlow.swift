@@ -63,7 +63,9 @@ extension AppFlow {
     }
     private func navigateTest() -> FlowContributors {
 //        let vc = BookSearchViewController(viewModel: container.bookSearchViewModel)
-        let vc = BookDetailViewController(viewModel: container.bookDetailViewModel)
+//        let vc = BookDetailViewController(viewModel: container.bookDetailViewModel)
+//        let vc = ProfileEditViewController(viewModel: container.profileEditViewModel)
+        let vc = BookReviewDetailViewController(viewModel: container.bookReviewDetailViewModel)
         self.window.rootViewController = vc
         return .one(flowContributor: .contribute(
             withNextPresentable: vc,

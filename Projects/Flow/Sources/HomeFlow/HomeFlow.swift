@@ -29,6 +29,16 @@ public class HomeFlow: Flow {
             return navigateToBookDetail(isbn: isbn)
         case .bookReviewWriteIsRequired(let isbn):
             return navigateToBookReportWrite(isbn: isbn)
+        
+        case .profileIsRequired:
+            return navigateToProfile()
+        case .profileEditRequired:
+            return navigateToProfileEdit()
+        case .popIsRequird:
+            return navigateToPop()
+
+        case .bookReviewDetailIsRequired(let reviewId):
+            return navigateToBookReviewDetail(reviewId: reviewId)
         default:
             return .none
         }
@@ -70,6 +80,33 @@ public class HomeFlow: Flow {
         rootViewController.pushViewController(bookReviewWriteViewContler, animated: true)
         return .one(flowContributor: .contribute(
             withNextPresentable: bookReviewWriteViewContler,
-            withNextStepper: OneStepper(withSingleStep: AppStep.error)))
+            withNextStepper: bookReviewWriteViewContler.viewModel))
+    }
+    private func navigateToProfile() -> FlowContributors {
+        let profileViewController = ProfileViewController(viewModel: container.profileViewModel)
+        rootViewController.pushViewController(profileViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: profileViewController,
+            withNextStepper: profileViewController.viewModel))
+    }
+    private func navigateToProfileEdit() -> FlowContributors {
+        let profileEditViewController = ProfileEditViewController(viewModel: container.profileEditViewModel)
+        rootViewController.pushViewController(profileEditViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: profileEditViewController,
+            withNextStepper: profileEditViewController.viewModel))
+    }
+    private func navigateToPop() -> FlowContributors {
+        rootViewController.popViewController(animated: true)
+        return .none
+    }
+
+    private func navigateToBookReviewDetail(reviewId: String) -> FlowContributors {
+        let bookReviewDetailViewController = BookReviewDetailViewController(viewModel: container.bookReviewDetailViewModel)
+        bookReviewDetailViewController.viewModel.reviewId = reviewId
+        rootViewController.pushViewController(bookReviewDetailViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: bookReviewDetailViewController,
+            withNextStepper: bookReviewDetailViewController.viewModel))
     }
 }
