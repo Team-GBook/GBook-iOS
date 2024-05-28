@@ -31,7 +31,7 @@ public class BooksDataSourceImpl: BooksDataSourceInterface {
             .filterSuccessfulStatusCodes()
     }
 
-    public func writeReview(isbn: String, request: ReviewWriteRequest) -> Completable {
+    public func writeReview(isbn: String, request: ReviewRequest) -> Completable {
         return provider.rx.request(.writeReview(isbn: isbn, request: request))
             .filterSuccessfulStatusCodes()
             .asCompletable()
