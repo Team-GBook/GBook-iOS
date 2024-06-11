@@ -11,14 +11,17 @@ public struct CommentElement {
     public let id: String
     public let userName: String
     public let content: String
+    public let replyCount: Int
 
     public init(
         id: String,
         userName: String,
-        content: String
+        content: String,
+        replyCount: Int
     ) {
         self.id = id
         self.userName = userName
         self.content = content
+        self.replyCount = replyCount
     }
 }

@@ -1,18 +1,16 @@
 import UIKit
-import Domain
+import RxCocoa
+import RxSwift
 import SnapKit
 import Then
-import DesignSystem
-import RxSwift
-import RxCocoa
 
-public class ReviewCommentViewController: UIViewController {
-    
+public class ReplyViewController: UIViewController {
     private let viewWillAppear = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
-    public let viewModel: ReviewCommentViewModel
-    private let commentTableView = UITableView().then {
-        $0.register(ReviewCommentCell.self, forCellReuseIdentifier: ReviewCommentCell.identifier)
+    public let viewModel: ReplyViewModel
+    private let commentView = CommentView()
+    private let replyTableView = UITableView().then {
+        $0.register(ReplyTableViewCell.self, forCellReuseIdentifier: ReplyTableViewCell.identifier)
         $0.rowHeight = UITableView.automaticDimension
         $0.separatorStyle = .none
     }
@@ -34,7 +32,8 @@ public class ReviewCommentViewController: UIViewController {
     ]).then {
         $0.spacing = 10
     }
-    public init(viewModel: ReviewCommentViewModel) {
+
+    public init(viewModel: ReplyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,22 +50,27 @@ public class ReviewCommentViewController: UIViewController {
         addView()
         setLayout()
         bind()
-        
+        commentView.configure(
+            userName: viewModel.userName,
+            content: viewModel.content,
+            replyCount: viewModel.replyCount
+        )
     }
+
     private func bind() {
-        let input = ReviewCommentViewModel.Input(
+        let input = ReplyViewModel.Input(
             viewWillAppear: viewWillAppear.asObservable(),
-            commentTableViewCellDidTap: commentTableView.rx.modelSelected(CommentElement.self).asObservable(),
             commentText: commentTextField.rx.text.orEmpty.asObservable(),
             sendButtonDidTapped: sendButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input)
-        output.commentList.asObservable()
-            .bind(to: commentTableView.rx.items(
-                cellIdentifier: ReviewCommentCell.identifier,
-                cellType: ReviewCommentCell.self)
+        output.replyList.asObservable()
+            .bind(to: replyTableView.rx.items(
+                cellIdentifier: ReplyTableViewCell.identifier,
+                cellType: ReplyTableViewCell.self)
             ) { row, item, cell in
-                cell.configure(with: item)            }
+                cell.configure(with: item)
+            }
             .disposed(by: disposeBag)
         sendButton.rx.tap
             .subscribe(onNext: { [weak self] in
@@ -74,17 +78,24 @@ public class ReviewCommentViewController: UIViewController {
                 self?.viewWillAppear.accept(())
             })
             .disposed(by: disposeBag)
+        
     }
     private func addView() {
         [
-            commentTableView,
+            commentView,
+            replyTableView,
             sendStackView
         ].forEach { view.addSubview($0) }
     }
     private func setLayout() {
-        commentTableView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(12)
+        commentView.snp.makeConstraints {
+            $0.top.equalTo(self.view.safeAreaLayoutGuide).inset(12)
             $0.leading.trailing.equalToSuperview()
+        }
+        replyTableView.snp.makeConstraints {
+            $0.top.equalTo(commentView.snp.bottom)
+            $0.leading.equalToSuperview().inset(21)
+            $0.trailing.equalToSuperview()
             $0.bottom.equalTo(sendStackView.snp.top)
         }
         sendButton.snp.makeConstraints {
@@ -96,4 +107,5 @@ public class ReviewCommentViewController: UIViewController {
             $0.height.equalTo(48)
         }
     }
+    
 }

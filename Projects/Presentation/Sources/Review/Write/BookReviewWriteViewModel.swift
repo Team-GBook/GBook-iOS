@@ -58,8 +58,9 @@ public class BookReviewWriteViewModel: ViewModelType, Stepper {
                         genre: $0.4.eng
                     )
                 )
+                .andThen(Single.just(AppStep.popIsRequird))
             }
-            .subscribe()
+            .bind(to: steps)
             .disposed(by: disposeBag)
 
         return Output(bookDetail: booksDetail.asSignal())

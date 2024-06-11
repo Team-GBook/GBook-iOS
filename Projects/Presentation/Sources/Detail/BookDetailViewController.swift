@@ -40,6 +40,7 @@ public class BookDetailViewController: UIViewController {
     }
     public override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+        
         viewWillAppear.accept(())
     }
     
