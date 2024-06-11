@@ -9,6 +9,7 @@ import Domain
 public class BookReviewDetailViewModel: ViewModelType, Stepper {
     
     public var reviewId: String = ""
+    public var isbn: String = ""
     public var steps = RxRelay.PublishRelay<RxFlow.Step>()
     public var disposeBag = DisposeBag()
 
@@ -30,6 +31,8 @@ public class BookReviewDetailViewModel: ViewModelType, Stepper {
         let viewWillAppear: Observable<Void>
         let editIsRequired: Observable<String>
         let deleteIsRequired: Observable<String>
+        let reviewCommentIsRequired: Observable<Void>
+        let popToRootView: Observable<Void>
     }
     public struct Output {
         let reviewDetiail: Signal<ReviewDetailEntity>
@@ -45,7 +48,7 @@ public class BookReviewDetailViewModel: ViewModelType, Stepper {
             .disposed(by: disposeBag)
         input.editIsRequired
             .map { isbn in
-                AppStep.bookReviewEditIsRequired(isbn: isbn)
+                AppStep.bookReviewEditIsRequired(isbn: self.isbn)
             }
             .bind(to: steps)
             .disposed(by: disposeBag)
@@ -56,6 +59,19 @@ public class BookReviewDetailViewModel: ViewModelType, Stepper {
             }
             .bind(to: steps)
             .disposed(by: disposeBag)
+        input.reviewCommentIsRequired
+            .map {
+                AppStep.reviewCommentIsRequired(reviewId: self.reviewId)
+            }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
+        input.popToRootView
+            .map {
+                AppStep.popToRootView
+            }
+            .bind(to: steps)
+            .disposed(by: disposeBag)
+
         return Output(
             reviewDetiail: reviewDetiail.asSignal()
         )

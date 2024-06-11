@@ -36,9 +36,17 @@ public class HomeFlow: Flow {
             return navigateToProfileEdit()
         case .popIsRequird:
             return navigateToPop()
+        case .popToRootView:
+            return popToRootView()
 
-        case .bookReviewDetailIsRequired(let reviewId):
-            return navigateToBookReviewDetail(reviewId: reviewId)
+        case .bookReviewDetailIsRequired(let isbn, let reviewId):
+            return navigateToBookReviewDetail(isbn: isbn, reviewId: reviewId)
+        case .bookReviewEditIsRequired(let isbn):
+            return navigateToReviewEdit(isbn: isbn)
+        case .reviewCommentIsRequired(let reviewId):
+            return navigateToComment(reviewId: reviewId)
+        case .reviewReplyIsRequired(let commentId, let userName, let content, let replyCount):
+            return navigateToReply(commentId: commentId, userName: userName, content: content, replyCount: replyCount)
         default:
             return .none
         }
@@ -100,13 +108,49 @@ public class HomeFlow: Flow {
         rootViewController.popViewController(animated: true)
         return .none
     }
+    private func popToRootView() -> FlowContributors {
+        rootViewController.popToRootViewController(animated: true)
+        return .none
+    }
 
-    private func navigateToBookReviewDetail(reviewId: String) -> FlowContributors {
+    private func navigateToBookReviewDetail(isbn: String, reviewId: String) -> FlowContributors {
         let bookReviewDetailViewController = BookReviewDetailViewController(viewModel: container.bookReviewDetailViewModel)
         bookReviewDetailViewController.viewModel.reviewId = reviewId
+        bookReviewDetailViewController.viewModel.isbn = isbn
         rootViewController.pushViewController(bookReviewDetailViewController, animated: true)
         return .one(flowContributor: .contribute(
             withNextPresentable: bookReviewDetailViewController,
             withNextStepper: bookReviewDetailViewController.viewModel))
+    }
+
+    private func navigateToComment(reviewId: String) -> FlowContributors {
+        let reviewCommentViewController = ReviewCommentViewController(viewModel: container.reviewCommentViewModel)
+        reviewCommentViewController.viewModel.reviewId = reviewId
+        rootViewController.pushViewController(reviewCommentViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: reviewCommentViewController,
+            withNextStepper: reviewCommentViewController.viewModel))
+    }
+
+    private func navigateToReviewEdit(isbn: String) -> FlowContributors {
+        let bookReviewEditViewController = BookReviewEditViewController(viewModel: container.bookReviewEditViewModel)
+        bookReviewEditViewController.viewModel.isbn = isbn
+        rootViewController.pushViewController(bookReviewEditViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: bookReviewEditViewController,
+            withNextStepper: bookReviewEditViewController.viewModel
+        ))
+    }
+    private func navigateToReply(commentId: String, userName: String, content: String, replyCount: Int) -> FlowContributors {
+        let replyViewController = ReplyViewController(viewModel: container.replyViewModel)
+        replyViewController.viewModel.commentId = commentId
+        replyViewController.viewModel.content = content
+        replyViewController.viewModel.userName = userName
+        replyViewController.viewModel.replyCount = replyCount
+        rootViewController.pushViewController(replyViewController, animated: true)
+        return .one(flowContributor: .contribute(
+            withNextPresentable: replyViewController,
+            withNextStepper: replyViewController.viewModel)
+        )
     }
 }

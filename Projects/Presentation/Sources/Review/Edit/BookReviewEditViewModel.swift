@@ -12,19 +12,19 @@ public class BookReviewEditViewModel: ViewModelType, Stepper {
     public var steps = RxRelay.PublishRelay<RxFlow.Step>()
     public var disposeBag = DisposeBag()
     private let fetchDetailBookUseCase: FetchDetailBookUseCase
-    private let writeReviewUseCase: WriteReviewUseCase
+    private let patchReviewUseCase: PatchReviewUseCase
 
     public init(
         fetchDetailBookUseCase: FetchDetailBookUseCase,
-        writeReviewUseCase: WriteReviewUseCase
+        patchReviewUseCase: PatchReviewUseCase
     ) {
         self.fetchDetailBookUseCase = fetchDetailBookUseCase
-        self.writeReviewUseCase = writeReviewUseCase
+        self.patchReviewUseCase = patchReviewUseCase
     }
 
     public struct Input {
         let viewWillAppear: Observable<Void>
-        let writeButtonDidTap: Signal<Void>
+        let editButtonDidTap: Signal<Void>
         let titleText: Driver<String>
         let reviewText: Driver<String>
         let reconstructionText: Driver<String>
@@ -45,10 +45,10 @@ public class BookReviewEditViewModel: ViewModelType, Stepper {
             .bind(to: booksDetail)
             .disposed(by: disposeBag)
 
-        input.writeButtonDidTap.asObservable()
+        input.editButtonDidTap.asObservable()
             .withLatestFrom(info)
             .flatMap {
-                self.writeReviewUseCase.excute(
+                self.patchReviewUseCase.excute(
                     isbn: self.isbn,
                     request: .init(
                         title: $0.0,
@@ -58,8 +58,9 @@ public class BookReviewEditViewModel: ViewModelType, Stepper {
                         genre: $0.4.eng
                     )
                 )
+                .andThen(Single.just(AppStep.popIsRequird))
             }
-            .subscribe()
+            .bind(to: steps)
             .disposed(by: disposeBag)
 
         return Output(bookDetail: booksDetail.asSignal())

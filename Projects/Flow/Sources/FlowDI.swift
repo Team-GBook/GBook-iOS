@@ -18,11 +18,15 @@ public struct FlowDI {
     public let homeViewModel: HomeViewModel
     public let bookSearchViewModel: BookSearchViewModel
     public let bookDetailViewModel: BookDetailViewModel
+    public let bookReviewEditViewModel: BookReviewEditViewModel
 
     //Reviews
     public let bookReviewWriteViewModel: BookReviewWriteViewModel
     public let bookReviewDetailViewModel: BookReviewDetailViewModel
 
+    public let reviewCommentViewModel: ReviewCommentViewModel
+
+    public let replyViewModel: ReplyViewModel
 }
 
 extension FlowDI {
@@ -54,6 +58,10 @@ extension FlowDI {
             fetchBestSellerUseCase: booksDI.fetchBestSellerUseCase,
             likeBookUseCase: booksDI.likeBookUseCase
         )
+        let bookReviewEditViewModel = BookReviewEditViewModel(
+            fetchDetailBookUseCase: booksDI.fetchDetailBookUseCase,
+            patchReviewUseCase: reviewsDI.patchReviewUseCase
+        )
         let bookReviewWriteViewModel = BookReviewWriteViewModel(
             fetchDetailBookUseCase: booksDI.fetchDetailBookUseCase,
             writeReviewUseCase: booksDI.writeReviewUseCase
@@ -63,6 +71,16 @@ extension FlowDI {
             fetchDetailBookUseCase: reviewsDI.fetchDetailUseCase,
             editReviewUseCase: reviewsDI.patchReviewUseCase,
             deleteReviewUseCase: reviewsDI.deleteReviewUseCase
+        )
+
+        let reviewCommentViewModel = ReviewCommentViewModel(
+            fetchReviewCommentUseCase: reviewsDI.fetchReviewCommentUseCase, 
+            writeCommentUseCase: reviewsDI.writeCommentUseCase
+        )
+
+        let replyViewModel = ReplyViewModel(
+            fetchReviewReplyUseCase: reviewsDI.fetchReviewReplyUseCase,
+            writeReplyUseCase: reviewsDI.writeReplyUseCase
         )
         return .init(
             onboardingViewModel: onboardingViewModel,
@@ -76,8 +94,11 @@ extension FlowDI {
             homeViewModel: homeViewModel,
             bookSearchViewModel: booksSearchViewModel, 
             bookDetailViewModel: bookDetailViewModel,
+            bookReviewEditViewModel: bookReviewEditViewModel,
             bookReviewWriteViewModel: bookReviewWriteViewModel,
-            bookReviewDetailViewModel: bookReviewDetailViewModel
+            bookReviewDetailViewModel: bookReviewDetailViewModel,
+            reviewCommentViewModel: reviewCommentViewModel,
+            replyViewModel: replyViewModel
         )
     }
 }

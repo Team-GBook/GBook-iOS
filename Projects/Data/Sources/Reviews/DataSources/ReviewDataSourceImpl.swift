@@ -36,5 +36,23 @@ public final class ReviewDataSourceImpl: ReviewsDataSourcesInterface {
             .filterSuccessfulStatusCodes()
     }
     
+    public func fetchReviewComment(reviewId: String) -> RxSwift.Single<Moya.Response> {
+        return provider.rx.request(.fetchComment(reviewId: reviewId))
+            .filterSuccessfulStatusCodes()
+    }
+    public func writeComment(reviewId: String, comment: String) -> RxSwift.Completable {
+        return provider.rx.request(.writeComment(reviewId: reviewId, comment: comment))
+            .filterSuccessfulStatusCodes()
+            .asCompletable()
+    }
     
+    public func fetchReviewReply(commentId: String) -> RxSwift.Single<Moya.Response> {
+        return provider.rx.request(.fetchReply(commentId: commentId))
+            .filterSuccessfulStatusCodes()
+    }
+    public func writeReply(commentId: String, comment: String) -> RxSwift.Completable {
+        return provider.rx.request(.writeReply(commentId: commentId, comment: comment))
+            .filterSuccessfulStatusCodes()
+            .asCompletable()
+    }
 }

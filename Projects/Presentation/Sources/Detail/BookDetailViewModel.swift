@@ -57,11 +57,10 @@ public class BookDetailViewModel: ViewModelType, Stepper {
             .disposed(by: disposeBag)
         input.reviewDetailIsRequired.asObservable()
             .map { reviewId in
-                AppStep.bookReviewDetailIsRequired(reviewId: reviewId)
+                AppStep.bookReviewDetailIsRequired(isbn: self.isbn, reviewId: reviewId)
             }
             .bind(to: steps)
             .disposed(by: disposeBag)
-        
         return Output(
             bookDetail: booksDetail.asSignal(),
             reviewList: reviewList.asSignal()

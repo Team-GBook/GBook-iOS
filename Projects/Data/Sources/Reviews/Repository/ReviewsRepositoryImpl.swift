@@ -31,6 +31,25 @@ public final class ReviewsRepositoryImpl: ReviewsRepositoryInterface {
             .map(ReviewDetailDTO.self)
             .map { $0.toDomain() }
     }
+    public func fetchReviewComment(reviewId: String) -> RxSwift.Single<Domain.CommentListEntity> {
+        return dataSource.fetchReviewComment(reviewId: reviewId)
+            .map(CommentListDTO.self)
+            .map { $0.toDomain() }
+    }
+    
+    public func fetchReviewReply(commentId: String) -> RxSwift.Single<Domain.ReplyListEntity> {
+        return dataSource.fetchReviewReply(commentId: commentId)
+            .map(ReplyListDTO.self)
+            .map { $0.toDomain() }
+    }
+    
+    public func writeComment(reviewId: String, comment: String) -> RxSwift.Completable {
+        return dataSource.writeComment(reviewId: reviewId, comment: comment)
+    }
+    
+    public func writeReply(commentId: String, comment: String) -> RxSwift.Completable {
+        return dataSource.writeReply(commentId: commentId, comment: comment)
+    }
     
 
 }

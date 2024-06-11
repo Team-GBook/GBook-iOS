@@ -15,11 +15,14 @@ public enum AppStep: Step {
     case searchIsRequired
     case bookReviewIsRequired(isbn: String)
     case bookReviewWriteIsRequired(isbn: String)
-    case bookReviewDetailIsRequired(reviewId: String)
+    case bookReviewDetailIsRequired(isbn: String, reviewId: String)
     case bookReviewEditIsRequired(isbn: String)
     case bookReviewDeleteIsRequired(isbn: String)
 
+    case reviewCommentIsRequired(reviewId: String)
+    case reviewReplyIsRequired(commentId: String, userName: String, content: String, replyCount: Int)
     case popIsRequird
+    case popToRootView
 
     case testIsRequired
     case error

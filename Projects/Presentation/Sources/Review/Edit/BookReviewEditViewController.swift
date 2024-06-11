@@ -7,10 +7,11 @@ import RxSwift
 
 public class BookReviewEditViewController: UIViewController {
     private let disposeBag = DisposeBag()
+    public var isbn: String = ""
     private let selectedGenre = PublishRelay<Genre>()
     private let viewDidAppear = PublishRelay<Void>()
-    public let viewModel: BookReviewWriteViewModel
-    public init(viewModel: BookReviewWriteViewModel) {
+    public let viewModel: BookReviewEditViewModel
+    public init(viewModel: BookReviewEditViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -45,7 +46,7 @@ public class BookReviewEditViewController: UIViewController {
         textViewHeight: 150
     )
     private let reviewInfoView = ReviewInfoView(
-        title: "감성평",
+        title: "감상평",
         placeholder: "감상평을 남겨주세요.",
         textViewHeight: 150
     )
@@ -61,9 +62,9 @@ public class BookReviewEditViewController: UIViewController {
         setLayout()
     }
     private func bind() {
-        let input = BookReviewWriteViewModel.Input(
+        let input = BookReviewEditViewModel.Input(
             viewWillAppear: viewDidAppear.asObservable(),
-            writeButtonDidTap: reviewWriteButton.rx.tap.asSignal(),
+            editButtonDidTap: reviewWriteButton.rx.tap.asSignal(),
             titleText: titleInfoView.textView.rx.text.orEmpty.asDriver(),
             reviewText: reviewInfoView.textView.rx.text.orEmpty.asDriver(),
             reconstructionText: reconstructionInfoView.textView.rx.text.orEmpty.asDriver(),
